@@ -1,5 +1,5 @@
 use std::{process::{Command, Stdio}, os::unix::process::CommandExt, str::{self, FromStr}};
-use fltk::{*, macros::window, window::Window, prelude::{WidgetExt, GroupExt, MenuExt}};
+use fltk::{*, macros::window, window::Window, prelude::{WidgetExt, GroupExt, MenuExt}, frame::Frame};
 
 fn other() -> String {
     let ifconf = Command::new("ifconfig")
@@ -52,8 +52,13 @@ fn main() {
     .with_size(200, 30)
     .below_of(&choices, 10);
 
+    let mut frame = Frame::default()
+    .with_size(200, 200)
+    .below_of(&but, 10);
+
     but.set_callback(move |_| {
-        into(choices.choice().unwrap(), String::from("Hello"))
+        into(choices.choice().unwrap(), String::from("Hello"));
+        frame.set_label(&choices.choice().unwrap());
     });
 
     wind.end();
